@@ -5,7 +5,8 @@ import requests
 from requests import Response
 
 from settings import API_URL, ACCEPTED_KEYS
-from commands.tasks.entities import TaskProperties, TaskItem, TaskToCreate
+from commands.tasks.entities import TaskItem, TaskToCreate
+from commands.birthdays.entities import BirthdayItem
 
 class NotionAPI:
 
@@ -19,6 +20,14 @@ class NotionAPI:
             temp = {k: v for k, v in i.items() if k in ACCEPTED_KEYS}
             task_item = TaskItem(**temp)
             items.append(task_item)
+        return items
+
+    def __sanitize_birthday_data(self, data: List[dict]) -> List[BirthdayItem]:
+        items = []
+        for i in data:
+            temp = {k: v for k, v in i.items() if k in ACCEPTED_KEYS}
+            birthday_item = BirthdayItem(**temp)
+            items.append(birthday_item)
         return items
 
     def query_tasks(self,
@@ -44,6 +53,17 @@ class NotionAPI:
         items = self.__sanitize_data(response.json()["results"])
         return items
 
+    def query_bithdays(self, database_id: str) -> List[BirthdayItem]:
+        response = requests.post(
+            f"{API_URL}/databases/{database_id}/query",
+            headers={
+                "Authorization": f"Bearer {self.api_token}",
+                "Notion-Version": self.notion_version,
+            }
+        )
+        items = self.__sanitize_birthday_data(data=response.json()["results"])
+        return items
+        
     def create_tasks(self, task: TaskToCreate) -> Response:
         """Creates a inbox tasks into the Tasks Database"""
         response = requests.post(

@@ -24,5 +24,6 @@ if config_path.is_file():
             exit(1)
 
 TASKS_DABASE_ID: str = parsed_yaml["notion_api"]["task_database_id"]
+BIRTHDAY_DATABASE_ID: str = parsed_yaml["notion_api"]["birthdays_database_id"]
 API_TOKEN: str = parsed_yaml["notion_api"]["api_key"]
 API_VERSION: str = str(parsed_yaml["notion_api"]["api_version"])
