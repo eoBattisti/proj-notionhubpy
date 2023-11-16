@@ -11,6 +11,7 @@ notion = NotionAPI(api_token=API_TOKEN, notion_version=API_VERSION)
 
 @app.command()
 def list():
+    """List all birthdays"""
     birthdays = notion.query_bithdays(database_id=BIRTHDAY_DATABASE_ID) 
     table = BirthdayTable()
     table.fill_table(birthdays)
