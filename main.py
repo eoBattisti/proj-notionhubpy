@@ -4,6 +4,7 @@ from notion_api import NotionAPI
 from settings import API_TOKEN, API_VERSION
 
 from commands.birthdays.commands import app as birthday_app
+from commands.projects.commands import app as project_app
 from commands.tasks.commands import app as task_app
 
 
@@ -13,6 +14,7 @@ notion_api = NotionAPI(api_token=API_TOKEN,
 
 app.add_typer(typer_instance=birthday_app, name="birthday", help="List birthdays")
 app.add_typer(typer_instance=task_app, name="tasks", help="List or create tasks")
+app.add_typer(typer_instance=project_app, name="projects", help="List projects")
 
 
 if __name__ == "__main__":

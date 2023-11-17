@@ -6,5 +6,8 @@ build-backend = "setuptools.build-meta"
 name = "notionpy"
 version = "0.0.1"
 
+[tool.ruff]
+line-length = 120
+
 [tools.setuptools.packages.find]
 namespaces = false

@@ -12,10 +12,9 @@ class BirthdayProperties(BasePropertiesClass):
 class BirthdayItem(BaseDataclass):
 
     def __post_init__(self) -> None:
-        self.properties: BirthdayProperties = self._sanitize_properties_data(data=self.properties) 
+        self.properties: BirthdayProperties = self._sanitize_properties_data(self.properties)
 
     def _sanitize_properties_data(self, data: dict) -> BirthdayProperties:
-        print(self.properties)
         name = data.get("Name", {}).get("title", [])
         if name:
             name = name[0].get("plain_text")

@@ -1,6 +1,8 @@
 from typing import List
 from rich.table import Table
 
+from custom_dataclasses import BaseDataclass
+
 class BaseTable(Table):
 
     def __init__(self, fields: List[str] = []) -> None:
@@ -10,7 +12,7 @@ class BaseTable(Table):
         for field in fields:
             self.add_column(field)
 
-    def fill_table(self, objects):
+    def fill_table(self, objects: List[BaseDataclass]):
         """Fill table with the given objects"""
         for obj in objects:
             values = [getattr(obj.properties, field.lower()) for field in self.fields]

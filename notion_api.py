@@ -3,6 +3,7 @@ import json
 from typing import List, Optional
 import requests
 from requests import Response
+from commands.projects.entities import ProjectsItem
 
 from settings import API_URL, ACCEPTED_KEYS
 from commands.tasks.entities import TaskItem, TaskToCreate
@@ -14,20 +15,11 @@ class NotionAPI:
         self.api_token: str = api_token
         self.notion_version: str = notion_version
 
-    def __sanitize_data(self, data: List[dict]) -> List[TaskItem]:
+    def __sanitize_data(self, data: List[dict]) -> List[dict]:
         items = []
         for i in data:
             temp = {k: v for k, v in i.items() if k in ACCEPTED_KEYS}
-            task_item = TaskItem(**temp)
-            items.append(task_item)
-        return items
-
-    def __sanitize_birthday_data(self, data: List[dict]) -> List[BirthdayItem]:
-        items = []
-        for i in data:
-            temp = {k: v for k, v in i.items() if k in ACCEPTED_KEYS}
-            birthday_item = BirthdayItem(**temp)
-            items.append(birthday_item)
+            items.append(temp)
         return items
 
     def query_tasks(self,
@@ -40,7 +32,7 @@ class NotionAPI:
             filter["filter"]["date"] = {"equals": datetime.today().date().isoformat()}
         elif weekly:
             filter["filter"]["date"] = {"this_week": {}}
-        else: 
+        else:
             filter = None
         response = requests.post(
             f"{API_URL}/databases/{database_id}/query",
@@ -51,7 +43,10 @@ class NotionAPI:
             json=json.loads(json.dumps(filter))
         )
         items = self.__sanitize_data(response.json()["results"])
-        return items
+        datas = []
+        for item in items:
+            datas.append(TaskItem(**item))
+        return datas
 
     def query_bithdays(self, database_id: str) -> List[BirthdayItem]:
         response = requests.post(
@@ -61,9 +56,26 @@ class NotionAPI:
                 "Notion-Version": self.notion_version,
             }
         )
-        items = self.__sanitize_birthday_data(data=response.json()["results"])
-        return items
-        
+        items = self.__sanitize_data(data=response.json()["results"])
+        data = []
+        for item in items:
+            data.append(BirthdayItem(**item))
+        return data
+
+    def query_projects(self, database_id: str) -> List[ProjectsItem]:
+        response = requests.post(
+            f"{API_URL}/databases/{database_id}/query",
+            headers={
+                "Authorization": f"Bearer {self.api_token}",
+                "Notion-Version": self.notion_version,
+            }
+        )
+        items = self.__sanitize_data(data=response.json()["results"])
+        data = []
+        for item in items:
+            data.append(ProjectsItem(**item))
+        return data
+
     def create_tasks(self, task: TaskToCreate) -> Response:
         """Creates a inbox tasks into the Tasks Database"""
         response = requests.post(

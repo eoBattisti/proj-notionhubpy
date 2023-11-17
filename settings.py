@@ -20,10 +20,10 @@ if config_path.is_file():
         try:
             parsed_yaml = yaml.safe_load(f)
         except yaml.YAMLError as exc:
-            print("Could not load configuration file")
-            exit(1)
+            raise Exception("Could not load configuration file") from exc
 
 TASKS_DABASE_ID: str = parsed_yaml["notion_api"]["task_database_id"]
 BIRTHDAY_DATABASE_ID: str = parsed_yaml["notion_api"]["birthdays_database_id"]
+PROJECTS_DATABSE_ID: str = parsed_yaml["notion_api"]["projects_database_id"]
 API_TOKEN: str = parsed_yaml["notion_api"]["api_key"]
 API_VERSION: str = str(parsed_yaml["notion_api"]["api_version"])

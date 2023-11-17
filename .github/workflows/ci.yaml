@@ -1,0 +1,30 @@
+name: CI Workflow
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  
+  linter:
+    runs-on: ubuntu-latest
+
+    steps:
+      
+      - name: Checking out source code
+        uses: actions/checkout@v4
+
+      - name: Setup python enviroment
+        uses: actions/setup-python@v4
+        with:
+          python-version: 3.12
+
+      - name: Installing dependencies  
+        run: pip3 install -r requirements.txt 
+    
+      - name: Ruff check
+        uses: chartboost/ruff-action@v1
+        with:
+          src: "."
+          version: 0.0.259
