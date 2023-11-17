@@ -2,23 +2,21 @@ from typing import Annotated
 import typer
 from rich.console import Console
 
-from notion_api import NotionAPI
-from settings import API_VERSION, API_TOKEN, TASKS_DABASE_ID
-
+from .api import TasksNotionAPI 
 from .table import TasksTable
-from .entities import TaskToCreate
+from .entities import TaskItem, TaskToCreate
+from cli.utils import process_data
 
 
 app = typer.Typer()
-notion = NotionAPI(api_token=API_TOKEN, notion_version=API_VERSION)
+notion = TasksNotionAPI()
 
 @app.command()
 def list(daily: Annotated[bool, typer.Option(help="A flag to search/filter for today's tasks")] = False,
          weekly: Annotated[bool, typer.Option(help="A flag to search/filter for this week's tasks")] = False):
     """List tasks from the Tasks Database""" 
-    tasks = notion.query_tasks(database_id=TASKS_DABASE_ID,
-                               daily=daily,
-                               weekly=weekly,)
+    tasks = notion.query_tasks(daily=daily, weekly=weekly,)
+    tasks = process_data(data=tasks, obj=TaskItem)
     table = TasksTable()
     table.fill_table(tasks)
     console = Console()

@@ -1,7 +1,7 @@
 from typing import List
 from rich.table import Table
 
-from custom_dataclasses import BaseDataclass
+from cli.custom_dataclasses import BaseDataclass
 
 class BaseTable(Table):
 

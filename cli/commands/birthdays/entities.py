@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 
-from custom_dataclasses import BaseDataclass, BasePropertiesClass
+from cli.custom_dataclasses import BaseDataclass, BasePropertiesClass
 
 
 @dataclass

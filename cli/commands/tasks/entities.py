@@ -2,7 +2,7 @@ from datetime import datetime
 from dataclasses import dataclass
 from typing import Optional
 
-from custom_dataclasses import BaseDataclass, BasePropertiesClass
+from cli.custom_dataclasses import BaseDataclass, BasePropertiesClass
 
 
 @dataclass
