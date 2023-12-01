@@ -44,6 +44,9 @@ jobs:
 
       - name: Installing dependencies  
         run: pip3 install -r requirements.txt 
+
+      - name: Coping config file
+        run: mkdir -p ~/.config/notionpy && cp ./settings.yaml ~/.config/notionpy
     
 
       - name: Running tests
