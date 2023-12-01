@@ -28,3 +28,20 @@ jobs:
         with:
           src: "."
           version: 0.0.259
+
+  tests:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checking out source code
+        uses: actions/checkout@v4
+
+      - name: Setup python enviroment
+        uses: actions/setup-python@v4
+        with:
+          python-version: 3.12
+
+      - name: Running tests
+        run: |
+          pip3 install pytest
+          pytest ./tests
