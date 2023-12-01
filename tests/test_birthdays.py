@@ -14,7 +14,6 @@ class FakeBirthdayAPI():
 def get_fake_api_obj_callback(ctx: typer.Context):
     ctx.obj = FakeBirthdayAPI()
 
-
 def test_birthdays_list(cli_runner: CliRunner):
     app.callback()(get_fake_api_obj_callback)
     result = cli_runner.invoke(app, ["list"])

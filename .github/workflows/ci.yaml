@@ -31,6 +31,7 @@ jobs:
 
   tests:
     runs-on: ubuntu-latest
+    needs: linter
 
     steps:
       - name: Checking out source code
@@ -43,5 +44,5 @@ jobs:
 
       - name: Running tests
         run: |
-          pip3 install pytest
-          pytest ./tests
+          pip3 install pytest typer[all] pytest-cov
+          pytest --cov ./tests

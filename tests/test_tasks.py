@@ -11,8 +11,7 @@ class FakeTaskAPI:
     def query_tasks(self, daily: bool, weekly: bool):
         data = generate_tasks()
         return data
-        
-    
+
     def create_task(self, task: TaskToCreate):
         pass
 
