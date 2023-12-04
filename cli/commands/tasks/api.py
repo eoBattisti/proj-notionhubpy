@@ -32,13 +32,28 @@ class TasksNotionAPI(NotionBaseAPI):
         - List[TaskItem]: A list of TaskItem instances representing the queried tasks.
 
         """
-        filter: Optional[dict] = {"filter": { "property": "Data", "date": {} }}
+        filter: Optional[dict] = {
+            "filter": {
+                "and": [
+                    {
+                        "property": "Feita",
+                        "checkbox": {
+                            "equals": False
+                        }
+                    },
+                    {
+                        "property": "Data",
+                        "date": {}
+                    }
+                ]
+            }
+        }
         if daily:
-            filter["filter"]["date"] = {"equals": datetime.today().date().isoformat()}
+            filter["filter"]["and"][1]["date"] = {"equals": datetime.today().date().isoformat()}
         elif weekly:
-            filter["filter"]["date"] = {"this_week": {}}
+            filter["filter"]["and"][1]["date"] = {"this_week": {}}
         else:
-            filter = None
+            filter = {"filter": {"property": "Feita", "checkbox": {"equals": False}}} 
         response = requests.post(
             f"{API_URL}/databases/{self.database_id}/query",
             headers={
@@ -47,8 +62,7 @@ class TasksNotionAPI(NotionBaseAPI):
             },
             json=json.loads(json.dumps(filter))
         )
-        items = self._sanitize_data(response.json()["results"])
-        return items
+        return response.json()["results"]
 
     def create_tasks(self, task: TaskToCreate) -> Response:
         """Creates a inbox tasks into the Tasks Database"""

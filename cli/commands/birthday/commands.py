@@ -1,9 +1,8 @@
 import typer
 from rich.console import Console
 
-from cli.commands.birthday.entities import BirthdayItem
-from cli.commands.birthday.table import BirthdayTable
-from cli.utils import process_data
+from cli.base_table import BaseTable
+from cli.settings import BIRTHDAY_FIELDS
 
 
 app = typer.Typer()
@@ -12,9 +11,9 @@ app = typer.Typer()
 def list(ctx: typer.Context):
     """List all birthdays"""
     birthdays = ctx.obj.query()
-    birthdays = process_data(data=birthdays, obj=BirthdayItem)
-    table = BirthdayTable()
-    table.fill_table(birthdays)
+    print(BIRTHDAY_FIELDS)
+    table = BaseTable(fields=BIRTHDAY_FIELDS, data=birthdays)
+    table.fill_table()
     console = Console()
     console.print(table)
 

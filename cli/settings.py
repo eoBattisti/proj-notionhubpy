@@ -4,7 +4,7 @@ import yaml
 
 
 
-APP_NAME = "notionpy"
+APP_NAME = "nthub"
 
 APP_DIR = typer.get_app_dir(APP_NAME)
 
@@ -22,8 +22,18 @@ if config_path.is_file():
         except yaml.YAMLError as exc:
             raise Exception("Could not load configuration file") from exc
 
-TASKS_DABASE_ID: str = parsed_yaml["notion_api"]["task_database_id"]
-BIRTHDAY_DATABASE_ID: str = parsed_yaml["notion_api"]["birthdays_database_id"]
-PROJECTS_DATABSE_ID: str = parsed_yaml["notion_api"]["projects_database_id"]
+TASKS_SETTINGS: dict = parsed_yaml["notion_api"]["databases"]["tasks"]
+TASKS_DABASE_ID: str = TASKS_SETTINGS.get('id', '')
+TASKS_FIELDS: list = TASKS_SETTINGS.get('fields', [])
+
+BIRTHDAYS_SETTINGS: dict = parsed_yaml["notion_api"]["databases"]["birthdays"]
+BIRTHDAY_DATABASE_ID: str = BIRTHDAYS_SETTINGS.get('id', '')
+BIRTHDAY_FIELDS: list = BIRTHDAYS_SETTINGS.get('fields', [])
+
+PROJECTS_SETTINGS: dict = parsed_yaml["notion_api"]["databases"]["projects"]
+PROJECTS_DATABSE_ID: str = PROJECTS_SETTINGS.get('id', '')
+PROJECTS_FIELDS: list = PROJECTS_SETTINGS.get('fields', [])
+
 API_TOKEN: str = parsed_yaml["notion_api"]["api_key"]
 API_VERSION: str = str(parsed_yaml["notion_api"]["api_version"])
+

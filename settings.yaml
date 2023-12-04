@@ -1,6 +1,16 @@
 notion_api:
-  api_key: secret_ltDrFCJCsii993OGj1uPtBWQBAfTfGFjX5Vc24khVmK
+  api_key: SECRET_KEY 
   api_version: 2022-06-28
-  task_database_id: 4abee5c8be33483ab39d092ff004d45f
-  birthdays_database_id: 1a01a8e7052b43bdb8c30ea74400a9f4
-  projects_database_id: 1428e204c58a411aa10e373cbf64c10c
+  databases:
+    tasks:
+      id: <your-database-id>
+      title: <your-database-title>
+      fields: <your-database-fields>
+    projects:
+      id: <your-database-id>
+      title: <your-database-title>
+      fields: <your-database-fields>
+    birthdays:
+      id: <your-database-id>
+      title: <your-database-title>
+      fields: <your-database-fields>

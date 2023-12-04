@@ -1,7 +1,7 @@
 from typing import List
 import requests
 
-from cli.settings import API_URL, ACCEPTED_KEYS
+from cli.settings import API_URL
 
 class NotionBaseAPI:
     """A generic class"""
@@ -11,13 +11,6 @@ class NotionBaseAPI:
         self.notion_version: str = notion_version
         self.database_id: str = database_id
 
-    def _sanitize_data(self, data: List[dict]) -> List[dict]:
-        items = []
-        for i in data:
-            temp = {k: v for k, v in i.items() if k in ACCEPTED_KEYS}
-            items.append(temp)
-        return items
-
     def query(self) -> List[dict]:
         response = requests.post(
             f"{API_URL}/databases/{self.database_id}/query",
@@ -26,5 +19,4 @@ class NotionBaseAPI:
                 "Notion-Version": self.notion_version,
             }
         )
-        items = self._sanitize_data(data=response.json()["results"])
-        return items
+        return response.json()["results"]
